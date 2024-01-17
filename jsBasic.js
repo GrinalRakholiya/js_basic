@@ -1,3 +1,4 @@
+//variable Declaration
 var a = 10
 function f() {
     var b=1;
@@ -21,6 +22,7 @@ const y = {
 y.prop1 = 3
 console.log(y);
 //-----------------------------------------------------------
+//operators
 function j(){
     let x,y,z;
     x=4;
@@ -33,14 +35,16 @@ function j(){
 }
 j();
 //-----------------------------------------------------------
+//Conditional statements (if, else if, else)
 let num = -10;
 if (num > 0)
     console.log("The number is positive.");
 else
     console.log("The number is negative");
 
+//-----------------------------------------------------------
+//Switch statement
 let n = 5;
-
 switch (n) {
     case 0:
         console.log("Number is zero.");
@@ -54,22 +58,27 @@ switch (n) {
     default:
         console.log("Number is greater than 2.");
 };
+
 //-----------------------------------------------------------
+//Loops (for, while, do-while)
 for (let i = 0; i < 5; i++) {
     console.log("Hello World!");    
 }
-// JavaScript code to use while loop
+
 let val = 1;
 while (val < 6) {
     console.log(val);
     val += 1;
 }
+
 let test = 11;
 do {
     console.log(test);
     test++;
 } while (test <= 15)
+
 //-----------------------------------------------------------
+// functions declaration, return statment
 function f() {
     return 4 / 2;
 }
@@ -80,7 +89,9 @@ const square = function (n) {
 };
 const x = square(7); // x gets the value 49
 console.log(x);
+
 //-----------------------------------------------------------
+//Array methods (push, pop, shift, unshift, splice, slice)
 const v=["g",56,"rt"];
 console.log(v);
 v[0]="fg";
@@ -102,7 +113,9 @@ console.log(items);
 var ite = ["Apple", "Banana", "Grape", "Strawberry"];
 let i=ite.slice(1,3);//create new array from postion 1 to 2
 console.log(i);
+
 //-----------------------------------------------------------
+//Object Creation, Modification
 let person = {
     firstName: "John",
     lastName: "Doe",
