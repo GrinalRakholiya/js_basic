@@ -1,0 +1,33 @@
+<html>
+<body>
+    <p id="demo">Hii</p>  
+    <h3 id="dom"></h3>          
+    <h4 class="paragraph">hello</h4>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+        <li>Item 4</li>
+    </ul>
+    <script>
+        // Using getElementById
+        document.getElementById("demo").innerHTML = "Hello World!";
+        document.getElementById("demo").style.color = "blue";  
+        //adding and removing child  
+        var newParagraph = document.createElement("h3");
+        newParagraph.textContent = "This paragraph was created dynamically.";
+        document.getElementById("dom").appendChild(newParagraph);   
+        newParagraph.remove();
+        // Using getElementByClassName
+        var pa = document.getElementsByClassName("paragraph");
+        pa[0].innerHTML = "Updated content";
+        // Using getElementById
+        var listItems = document.getElementsByTagName("li");
+        for (var i = 0; i < listItems.length; i++) {
+            listItems[i].innerHTML = i + 1;
+        }  
+    </script>
+</body>
+</html>
+
+    
