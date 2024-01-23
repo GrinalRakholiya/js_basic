@@ -1,0 +1,139 @@
+<html lang="en">
+<head>   
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: white;
+        }
+        #dateRangePicker {
+            margin: 20px 0;
+            text-align: center;
+        }
+        #userGrid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .user-card {
+            background-color: rgb(253, 251, 244);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .user-info {
+            padding: 10px;
+        }
+        .user-username {
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: left;
+        }
+        .user-image-stats {
+            display: flex;
+            margin-top: 10px;
+        }
+        .user-image {
+            width: 28%;
+            height: 100px;
+            margin-right: 40px;
+            border-radius: 50%;
+        }
+        .user-stats {
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        .user-stats div {
+            margin-right: 26px;
+        }
+        .user-bio {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            color: #555;
+            border-top: 1px solid #ccc;
+            padding-top: 8px;
+        }
+        .remove-button {
+            cursor: pointer;
+            color: rgb(245, 236, 236);
+            background-color: rgb(240, 18, 18);
+            font-size: 0.9em;
+            border-color: rgb(240, 18, 18);
+            align-items: right;
+            margin-left: 230px;
+            height: 30px;
+            width: 70px;
+        }
+        .total-badge {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            padding: 5px;
+        }
+        #sortLabel {
+            display: inline-block;
+            margin-left: 10px;
+            margin-right: 4px;
+        }
+        #sortByMenu {
+            display: inline-block;
+            font-size: 16px;
+            background-color: rgb(182, 188, 189);
+        }
+    </style>
+</head>
+<body>
+    <div id="dateRangePicker">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" style="background-color: rgb(182, 188, 189);  font-size: 16px;">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" style="background-color: rgb(182, 188, 189); font-size: 16px;">
+
+        <!-- Sort By Dropdown Menu -->
+        <label id="sortLabel" for="sortBy">Sort By:</label>
+        <select id="sortByMenu">
+            <option value="twubric">Twubric Score</option>
+            <option value="friends">Friends</option>
+            <option value="influence">Influence</option>
+            <option value="chirpiness">Chirpiness</option>
+        </select>
+    </div>
+
+    <div id="userGrid">
+        <!-- User cards will be dynamically added here -->
+    </div>
+    <script>
+        // Fetch JSON data and render users
+        fetch('twit.json')
+            .then(response => response.json())
+            .then(data => {
+                const users = data.users;
+                const userGrid = document.getElementById('userGrid');
+
+                users.forEach(user => {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+
+                    userCard.innerHTML = `
+                        <div class="user-info"><div class="user-username">${user.fullname}<span class="total-badge">${user.twubric.total}</span></div>
+                            <div class="user-image-stats"><img class="user-image" src="${user.image}" alt="${user.fullname} Image">
+                                <div class="user-stats"><div>${user.twubric.friends} Friends</div>
+                                                        <div>${user.twubric.influence} Influence</div>
+                                                        <div>${user.twubric.chirpiness} Chirpiness</div>
+                                </div>
+                            </div>
+                            <div class="user-bio">Join Date: ${new Date(user.join_date * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                <button class="remove-button">Remove</button>
+                            </div>
+                        </div>
+                    `;
+                    userGrid.appendChild(userCard);
+                });})
+            .catch(error => {
+                console.error('Error fetching or parsing JSON:', error);
+            });
+    </script>
+</body>
+</html>
