@@ -1,0 +1,47 @@
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            gap: 10px;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="start" onclick="startChange()">Start</button>
+    <button id="stop" onclick="stopChange()" disabled>Stop</button>
+
+    <script>
+        let intervalId;
+
+        function gRandomNum() { //This function generates a pseudo-random number using bitwise operations on the current timestamp. The generated number is then used as part of the hexadecimal color code.
+            return Date.now() ^ (Date.now() >> 16); //take current timestamp 
+        }
+
+        function changeBColor() { //This function changes the background color of the body to a random color. It uses the generateRandomNumber function to create a color code.
+            document.body.style.backgroundColor = `#${gRandomNum() & 0xFFFFFFF}`; //The bitwise AND operation with 0xFFFFFFF ensures that only the lower 24 bits of the generated number are kept
+        }
+
+        function startChange() {
+            document.getElementById("start").disabled = true;
+            document.getElementById("stop").disabled = false;
+            intervalId = setInterval(changeBColor, 100); //A variable to store the interval ID returned by setInterval,and later clear the interval.
+        }
+
+        function stopChange() {
+            document.getElementById("start").disabled = false;
+            document.getElementById("stop").disabled = true;
+            clearInterval(intervalId);
+        }        
+    </script>
+</body>
+</html>

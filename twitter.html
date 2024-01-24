@@ -1,9 +1,11 @@
 <html lang="en">
 <head>   
     <style>
-        body {
+          body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             background-color: white;
+            margin: 0; 
+            padding: 0; 
         }
         #dateRangePicker {
             margin: 20px 0;
@@ -12,9 +14,9 @@
         #userGrid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 20px; /* Set the desired space between elements */
             max-width: 500px;
-            margin: 0 auto;
+            margin: 20px auto; /* Set margin to create space between header and grid */
         }
         .user-card {
             background-color: rgb(253, 251, 244);
@@ -85,21 +87,23 @@
     </style>
 </head>
 <body>
-    <div id="dateRangePicker">
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" style="background-color: rgb(182, 188, 189);  font-size: 16px;">
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" style="background-color: rgb(182, 188, 189); font-size: 16px;">
-
-        <!-- Sort By Dropdown Menu -->
-        <label id="sortLabel" for="sortBy">Sort By:</label>
-        <select id="sortByMenu">
-            <option value="twubric">Twubric Score</option>
-            <option value="friends">Friends</option>
-            <option value="influence">Influence</option>
-            <option value="chirpiness">Chirpiness</option>
-        </select>
-    </div>
+        
+            <div id="dateRangePicker">
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" style="background-color: rgb(182, 188, 189);  font-size: 16px;">
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" style="background-color: rgb(182, 188, 189); font-size: 16px;">
+            
+                <!-- Sort By Dropdown Menu -->
+                <label id="sortLabel" for="sortBy">Sort By:</label>
+                <select id="sortByMenu">
+                    <option value="twubric">Twubric Score</option>
+                    <option value="friends">Friends</option>
+                    <option value="influence">Influence</option>
+                    <option value="chirpiness">Chirpiness</option>
+                </select>
+            </div>
+        
 
     <div id="userGrid">
         <!-- User cards will be dynamically added here -->
