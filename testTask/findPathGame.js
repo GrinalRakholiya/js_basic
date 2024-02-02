@@ -42,6 +42,7 @@ function canMove(matrix, x = 0, y = 0, lastMove = 2, moves = []) {
             return end;
         }
     }
+    
     let [start, end] = direction[value];
     const startIndex = [start, end].indexOf(validMoves[lastMove]);
 
@@ -71,6 +72,7 @@ function canMove(matrix, x = 0, y = 0, lastMove = 2, moves = []) {
     else if (end === 4) {
         y--;
     }
+    
     if (x >= 0 && x < matrix.length && y >= 0 && y < matrix[0].length) {
         return canMove(matrix, x, y, lastMove, moves);
     }
