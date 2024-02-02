@@ -1,0 +1,111 @@
+<html>
+    <h2>User Authentication</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="button" id="loginButton" style="margin-left: 100px;" onclick="handleLogin()">Login</button>
+    </form>
+
+    <h2>Task </h2>
+    <div id="taskList" style="margin-top: 20px;"> </div>
+    
+    <h2>Post New Task</h2>
+    <form id="postTaskForm">
+        <label for="taskName">Task Name:</label>
+        <input type="text" id="taskName" name="taskName"><br><br>
+        <label for="taskData">Task Name:</label>
+        <input type="text" id="taskData" name="taskName"><br><br>
+        <button type="button" id="postTaskButton" style="margin-left: 100px;" onclick="handlePostTask()">Post
+            Task</button>
+        <div id="message"></div>
+    </form>
+   
+    <script>
+        const users = [
+            {username: '1', password: '1'},
+            {username: 'iva', password: '2'},
+            {username: 'gri', password: '3'}
+        ];
+        let tasks = [
+            {1: "API call is Successful"},
+            {2: "task fetched from server"}
+        ];
+
+        function authenticateUser(username, password) {
+            return new Promise((resolve, reject) => {
+                const user = users.find(user => user.username === username && user.password === password);
+                if (user) {
+                    resolve(user);
+                } else {
+                    reject('Authentication failed. Invalid username or password.');
+                }
+            });
+        }
+
+        function fetchTasks() {
+            return new Promise((resolve, reject) => {
+                resolve(tasks); // Resolve with the array of tasks
+                reject('Failed to fetch task.');
+            });
+        }
+
+        function postData() {
+            return new Promise((resolve, reject) => {
+                resolve('Data posted successfully.');
+                reject('Failed to post data.');
+            });
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            authenticateUser(username, password)
+                .then(user => {
+                    console.log('Authentication successful.' + JSON.stringify(user));
+
+                    fetchTasks() 
+                        .then(tasks => {
+                            displayTasks(tasks); // Display tasks in the UI
+                        })
+                        .catch(error => {
+                            console.log(error); // Handle error in fetching tasks
+                        });
+                })
+                .catch(error => {
+                    console.log(error); // Handle authentication error
+                });
+        }
+
+        function displayTasks(tasks) {
+            const taskListDiv = document.getElementById('taskList');
+            taskListDiv.innerHTML = ''; // Clear existing task list
+
+            tasks.forEach(task => {
+                for (let key in task) {
+                    const taskItem = document.createElement('div');
+                    taskItem.textContent = `${key}: ${task[key]}`;
+                    taskListDiv.appendChild(taskItem);
+                }
+            });
+        }
+
+        function handlePostTask() {
+            const taskName = document.getElementById('taskName').value;
+            const taskData = document.getElementById('taskData').value;
+
+            postData()
+                .then(response => {
+                    tasks.push({ [taskName]: taskData });                    
+                    alert(response);                  
+                    console.log(JSON.stringify(tasks)); // Log or display updated tasks
+                })
+                .catch(error => {
+                    console.log(error); // Log the error if posting fails
+                });
+        }
+    </script>
+</body>
+</html>
