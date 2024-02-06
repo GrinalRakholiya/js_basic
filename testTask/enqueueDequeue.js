@@ -1,43 +1,48 @@
-class handleQueue {
+class HandleQueue {
     constructor() {
-        this.queue = []; //hold task
-        this.isOnWork = false; //queue currently processing task
+        this.queue = [];
+        this.isOnWork = false;
     }
-    enqueue(task) { //add new task to que       
-       
-        this.queue.push(task); //push task into que array
-            console.log(this.queue);
-            if (!this.isOnWork) { // if que not currently busy if isbusy false it call dequeue to start processing task
-                this.dequeue();
-            }        
-    }
-    async dequeue() {
-        if (this.queue.length === 0 || this.isOnWork) { // it check if que empty or busy if condition true it return false indicate no further process can be done at momemnt
-            console.log(false);
-            return false; // return
+
+    enqueue(task) {
+        this.queue.push(task);
+        if (!this.isOnWork) {
+            this.isOnWork = true;
+            this.dequeue();
         }
-        const task = this.queue.shift(); //remove nd return first ele from array then set isbusy to true to indicate that queue is now processing task
-        this.isOnWork = true;
+    }
+
+    async dequeue() {
+        if (this.queue.length === 0) {
+            console.log(this.queue);
+            this.isOnWork = false; // Set to false indicating queue is not busy
+            return false;
+        }
+
+        const task = this.queue.shift();
+        console.log(`Start processing task ${task.name}`);
 
         try {
-            await task();            
-        }
+            const result = await task();
+            console.log(`Task completed ${task.name}`);
+            console.log(result);
+        }         
         catch (error) {
-            console.error(error);                
-        }
-        finally {
+            console.error("Error:", error);
+        }        
+        finally {            
             this.dequeue();
-            this.isOnWork = false; //
-            //process next task           
         }
     }
-    
 }
-const HandleQueue = new handleQueue();
-const api1 = () => fetch('https://jsonplaceholder.typicode.com/todos');
-const api2 = () => fetch('https://pokeapi.co/api/v2/pokemon?limit=50');
 
+const handleQueue = new HandleQueue();
 
-HandleQueue.enqueue(api1);
-// console.log();
- HandleQueue.enqueue(api2);
+const api1 = () => fetch('https://jsonplaceholder.typicode.com/posts/1');
+const api2 = () => fetch('https://jsonplaceholder.typicode.com/posts/2');
+//const api2 = () => fetch(''); // Empty URL
+const api3 = () => fetch('https://jsonplaceholder.typicode.com/posts/3');
+
+handleQueue.enqueue(api1);
+handleQueue.enqueue(api2);
+handleQueue.enqueue(api3);
