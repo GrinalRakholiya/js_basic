@@ -26,11 +26,11 @@ class HandleQueue {
             const result = await task();
             console.log(`Task completed ${task.name}`);
             console.log(result);
-        }         
+        }
         catch (error) {
             console.error("Error:", error);
-        }        
-        finally {            
+        }
+        finally {
             this.dequeue();
         }
     }
