@@ -1,0 +1,69 @@
+<html>
+<head>   
+    <script>
+        class HandleQueue {
+            constructor() {
+                this.queue = [];
+                this.isOnWork = false;
+            }
+            enqueue(task) {
+                this.queue.push(task);
+                console.log(`queue items:`,task.name); // Log pushed task
+                if (!this.isOnWork) {
+                    this.isOnWork = true;
+                    this.dequeue();
+                }
+            }
+            async dequeue() {
+                if (this.queue.length === 0) {
+                    console.log("Queue is empty");
+                    this.isOnWork = false; // Set to false indicating queue is not busy
+                    return false;
+                }
+                const task = this.queue.shift();
+                try {
+                    const response = await task();
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch:`);
+                    }
+                    const data = await response.json(); // Extract JSON from the response
+                    console.log("fetched data", data); // Output the data received from the API
+                    console.log(`${task.name} Task completed...`);
+                }
+                catch (error) {
+                    console.error("Error:", error);
+                    //return
+                }
+                
+                console.log("Queue after shift:", this.queue);
+                this.dequeue();
+                // finally {
+                //     // This ensures that even if there's an error, we continue processing the queue
+                //     console.log("Queue after shift:", this.queue);
+                //     this.dequeue();
+                // }
+            }
+        }
+        const handleQueue = new HandleQueue();
+        const api1 = () => fetch('https://jsonplaceholder.typicode.com/posts/1');
+      //  const api2 = () => fetch('https://jsonplaceholder.typicode.com/posts/2');
+       // const api2 = () => fetch('');
+
+        const api2 = () => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    reject("Timeout exceeded");
+                }, 1000);
+                fetch('https://jsonplaceholder.typicode.com/posts/2')
+                    .then(response => resolve(response))
+                    .catch(error => reject(error));
+            });
+        };
+        const api3 = () => fetch('https://jsonplaceholder.typicode.com/posts/3');
+        handleQueue.enqueue(api1);
+        handleQueue.enqueue(api2);
+        handleQueue.enqueue(api3);
+    </script>
+
+</head>
+</html>
