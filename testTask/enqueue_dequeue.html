@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handle Queue</title>
+<html>
+<head>   
     <script>
         class HandleQueue {
             constructor() {
@@ -13,6 +8,7 @@
             }
             enqueue(task) {
                 this.queue.push(task);
+                console.log(`queue items:`,task.name); // Log pushed task
                 if (!this.isOnWork) {
                     this.isOnWork = true;
                     this.dequeue();
@@ -25,20 +21,20 @@
                     return false;
                 }
                 const task = this.queue.shift();
-                console.log(`Start processing task ${task.name}`);
                 try {
                     const response = await task();
                     if (!response.ok) {
                         throw new Error(`Failed to fetch:`);
                     }
                     const data = await response.json(); // Extract JSON from the response
-                    console.log(data); // Output the data received from the API
+                    console.log("fetched data", data); // Output the data received from the API
                     console.log(`${task.name} Task completed...`);
                 }
                 catch (error) {
                     console.error("Error:", error);
                     //return
                 }
+                
                 console.log("Queue after shift:", this.queue);
                 this.dequeue();
                 // finally {
@@ -50,13 +46,15 @@
         }
         const handleQueue = new HandleQueue();
         const api1 = () => fetch('https://jsonplaceholder.typicode.com/posts/1');
-        // const api2 = () => fetch('https://jsonplaceholder.typicode.com/posts/2');
+      //  const api2 = () => fetch('https://jsonplaceholder.typicode.com/posts/2');
+       // const api2 = () => fetch('');
+
         const api2 = () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject("Timeout exceeded");
-                }, 200);
-                fetch('https://jsonplaceholder.typicode.com/todo')
+                }, 1000);
+                fetch('https://jsonplaceholder.typicode.com/posts/2')
                     .then(response => resolve(response))
                     .catch(error => reject(error));
             });
@@ -66,6 +64,6 @@
         handleQueue.enqueue(api2);
         handleQueue.enqueue(api3);
     </script>
-</head>
 
+</head>
 </html>
